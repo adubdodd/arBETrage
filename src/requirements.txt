@@ -1,0 +1,7 @@
+requests               # For making HTTP requests (API calls)
+pandas                 # For data manipulation and analysis
+numpy                  # For numerical operations
+loguru                 # For advanced logging
+discord.py             # For Discord bot integration (if you choose Discord alerts)
+python-telegram-bot    # For Telegram bot integration (if you choose Telegram alerts)
+dotenv                 # For loading environment variables from a .env file

@@ -1,0 +1,11 @@
+.env
+*.ipynb
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+*.out
+*.pid
+.python-version
+.DS_Store

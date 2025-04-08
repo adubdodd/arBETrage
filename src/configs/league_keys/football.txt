@@ -1,0 +1,3 @@
+americanfootball_ncaaf
+americanfootball_ncaaf_championship_winner
+americanfootball_nfl_super_bowl_winner

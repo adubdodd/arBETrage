@@ -1,0 +1,7 @@
+icehockey_ahl
+icehockey_liiga
+icehockey_mestis
+icehockey_nhl
+icehockey_nhl_championship_winner
+icehockey_sweden_allsvenskan
+icehockey_sweden_hockey_league
