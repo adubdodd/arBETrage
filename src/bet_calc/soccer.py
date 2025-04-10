@@ -6,9 +6,9 @@ def implied_probability(odds):
 
 def calc_soccer_probs(df):
     # Ensure we keep the Matchup column before grouping
-    best_home = df.loc[df.groupby("Match_ID")["Home_Odds"].idxmax(), ["Match_ID", "Matchup","Start_Time", "Home_Odds", "Bookmaker"]]
-    best_away = df.loc[df.groupby("Match_ID")["Away_Odds"].idxmax(), ["Match_ID", "Matchup","Start_Time", "Away_Odds", "Bookmaker"]]
-    best_draw = df.loc[df.groupby("Match_ID")["Draw_Odds"].idxmax(), ["Match_ID", "Matchup","Start_Time", "Draw_Odds", "Bookmaker"]]
+    best_home = df.loc[df.groupby("Match_ID")["Home_Odds"].idxmax(), ["Match_ID", "Sport", "Matchup", "Start_Time", "Home_Odds", "Bookmaker"]]
+    best_away = df.loc[df.groupby("Match_ID")["Away_Odds"].idxmax(), ["Match_ID", "Sport", "Matchup", "Start_Time", "Away_Odds", "Bookmaker"]]
+    best_draw = df.loc[df.groupby("Match_ID")["Draw_Odds"].idxmax(), ["Match_ID", "Sport", "Matchup", "Start_Time", "Draw_Odds", "Bookmaker"]]
 
     # Rename columns for merging
     best_home = best_home.rename(columns={"Home_Odds": "Best_Home_Odds", "Bookmaker": "Home_Bookmaker"})
@@ -16,14 +16,16 @@ def calc_soccer_probs(df):
     best_draw = best_draw.rename(columns={"Draw_Odds": "Best_Draw_Odds", "Bookmaker": "Draw_Bookmaker"})
 
     # Compute harmonic mean of odds (ensure Matchup is kept)
-    harmonic_df = df.groupby(["Match_ID", "Matchup","Start_Time"]).agg(
+    harmonic_df = df.groupby(["Match_ID", "Sport", "Matchup", "Start_Time"]).agg(
         Harmonic_Home_Odds=("Home_Odds", lambda x: hmean(x)),
         Harmonic_Away_Odds=("Away_Odds", lambda x: hmean(x)),
         Harmonic_Draw_Odds=("Draw_Odds", lambda x: hmean(x))
     ).reset_index()
 
     # Merge best odds and bookmaker data
-    agg_df = harmonic_df.merge(best_home, on=["Match_ID", "Matchup","Start_Time"]).merge(best_away, on=["Match_ID", "Matchup","Start_Time"]).merge(best_draw, on=["Match_ID", "Matchup","Start_Time"])
+    agg_df = harmonic_df.merge(best_home, on=["Match_ID", "Sport", "Matchup", "Start_Time"])\
+        .merge(best_away, on=["Match_ID", "Sport", "Matchup","Start_Time"])\
+        .merge(best_draw, on=["Match_ID", "Sport", "Matchup","Start_Time"])
 
     # Compute implied probabilities using best odds (not harmonic)
     agg_df["Implied_Home_Prob"] = implied_probability(agg_df["Best_Home_Odds"]) * 100
@@ -40,7 +42,7 @@ def calc_soccer_probs(df):
 
     # Select and reorder columns for output
     output_columns = [
-        "Match_ID", "Matchup", "Start_Time",
+        "Match_ID", "Sport", "Matchup", "Start_Time",
         "Best_Home_Odds", "Home_Bookmaker",
         "Best_Away_Odds", "Away_Bookmaker",
         "Best_Draw_Odds", "Draw_Bookmaker",
@@ -94,6 +96,7 @@ def calc_arbitrage(df, bet_unit=1000):
         # Store the results for the current match
         results.append({
             "Match_ID": row["Match_ID"],
+            "League": row["Sport"],
             "Matchup": row["Matchup"],
             "Start_Time": row["Start_Time"],
             "Stake": bet_unit,

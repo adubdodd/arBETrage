@@ -7,7 +7,7 @@ from notify.discord import format_message, send_to_discord
 load_dotenv()
 SPORT = os.getenv('SPORT')
 
-with open('configs/league_keys/soccer.txt', 'r') as file:
+with open('/src/configs/league_keys/soccer.txt', 'r') as file:
     leagues = file.read().splitlines()
 
 odds_df = get_odds(leagues)

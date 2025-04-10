@@ -15,7 +15,7 @@ if __name__ == "__main__":
         print(f"Invalid sport: {SPORT}. Please choose from 'hockey', 'basketball', 'baseball', or 'football'.")
         sys.exit(1)
 
-    with open(f'configs/league_keys/{SPORT}.txt', 'r') as file:
+    with open(f'/src/configs/league_keys/{SPORT}.txt', 'r') as file:
         leagues = file.read().splitlines() 
 
     odds_df = get_odds(leagues)

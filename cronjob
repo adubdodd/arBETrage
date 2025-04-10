@@ -1,1 +1,1 @@
-0 10-22 * * * /app/run_bets.sh >> /var/log/cron.log 2>&1
+55 12-23 * * * bash /src/run_bets.sh >> /var/log/cron.log 2>&1

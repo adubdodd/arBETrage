@@ -2,7 +2,7 @@ import pandas as pd
 import requests
 import os
 from dotenv import load_dotenv
-from src.helper_functions import get_legal_sportsbooks
+from helper_functions import get_legal_sportsbooks
 
 load_dotenv()
 
@@ -49,7 +49,7 @@ def get_odds(leagues:list):
     # Transform
         for data in odds_json:
             match_id = data["id"]
-            sport = data["sport_title"]
+            sport = data["sport_key"]
             start_time = data["commence_time"]
             home_team = data["home_team"]
             away_team = data["away_team"]

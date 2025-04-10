@@ -5,3 +5,4 @@ loguru                 # For advanced logging
 discord.py             # For Discord bot integration (if you choose Discord alerts)
 python-telegram-bot    # For Telegram bot integration (if you choose Telegram alerts)
 dotenv                 # For loading environment variables from a .env file
+scipy                  # For advanced math formulae

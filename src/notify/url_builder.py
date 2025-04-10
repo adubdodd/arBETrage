@@ -11,9 +11,7 @@ BOOKMAKER_BASE_URLS = {
 
 def load_sport_league_mapping():
     """Load the sport-to-league mapping from JSON."""
-    mapping_path = os.path.join('configs', 'url_mapping.json')
-    
-    with open(mapping_path, 'r') as file:
+    with open('/src/configs/url_mapping.json', 'r') as file:
         return json.load(file)
 
 def build_sportsbook_url(bookmaker, league):
@@ -23,9 +21,11 @@ def build_sportsbook_url(bookmaker, league):
     league_key = league.lower()
     
     if bookmaker not in BOOKMAKER_BASE_URLS:
+        print(f"Error: Bookmaker '{bookmaker}' not supported.")
         return f"Error: Bookmaker '{bookmaker}' not supported."
     
     if league_key not in SPORT_LEAGUE_MAPPING:
+        print(f"Error: Bookmaker '{bookmaker}' not supported.")
         return f"Error: League '{league}' not found."
     
     # Get the league path parts from the mapping, defaulting to an empty string if not found

@@ -6,7 +6,9 @@ from helper_functions import get_legal_sportsbooks
 
 load_dotenv()
 
-STATE = os.getenv('STATE')
+STATE = os.getenv('STATE','this is not working')
+API_KEY = os.getenv('API_KEY')
+print(STATE, API_KEY)
 
 def get_odds(leagues:list):
     # List to store rows
@@ -45,7 +47,7 @@ def get_odds(leagues:list):
 
         for data in odds_json:
             game_id = data["id"]
-            sport = data["sport_title"]
+            sport = data["sport_key"]
             start_time = data["commence_time"]
             home_team = data["home_team"]
             away_team = data["away_team"]
@@ -73,7 +75,7 @@ def get_odds(leagues:list):
 
                 # Append the row
                 rows.append(row_data)
-
+    
     # Convert to DataFrame
     df = pd.DataFrame(rows)
 

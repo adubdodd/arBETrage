@@ -9,3 +9,4 @@ __pycache__/
 *.pid
 .python-version
 .DS_Store
+.venv/
