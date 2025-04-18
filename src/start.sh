@@ -1,6 +1,15 @@
 #!/bin/bash
 
-# Run the script immediately on container start
+# Wait for MongoDB to be ready
+echo "Waiting for MongoDB to be ready..."
+until nc -z mongo 27017; do
+  echo "Mongo is unavailable - sleeping"
+  sleep 2
+done
+
+echo "Mongo is up - continuing"
+
+# Optionally run the initial script
 # echo "Running initial execution..."
 # bash /src/run_bets.sh
 
