@@ -2,6 +2,7 @@ import pandas as pd
 import requests
 import os
 from dotenv import load_dotenv
+from datetime import datetime, timezone, timedelta
 from helper_functions import get_legal_sportsbooks
 
 load_dotenv()
@@ -34,7 +35,7 @@ def get_odds(leagues:list):
         )
     
         if odds_response.status_code != 200:
-            print(f'Failed to get odds for {sport}: status_code {odds_response.status_code}, response body {odds_response.text}')
+            print(f'Failed to get odds for {league}: status_code {odds_response.status_code}, response body {odds_response.text}')
     
         else:
             odds_json = odds_response.json()
@@ -49,7 +50,8 @@ def get_odds(leagues:list):
     # Transform
         for data in odds_json:
             match_id = data["id"]
-            sport = data["sport_key"]
+            league_title = data["sport_title"]
+            league_key = data["sport_key"]
             start_time = data["commence_time"]
             home_team = data["home_team"]
             away_team = data["away_team"]
@@ -58,7 +60,8 @@ def get_odds(leagues:list):
                 bookie_name = bookmaker["title"]
                 row_data = {
                     "Match_ID": match_id,
-                    "Sport": sport,
+                    "League_Title": league_title,
+                    "League_Key": league_key,
                     "Matchup": home_team + ' vs. ' + away_team,
                     "Start_Time": start_time,
                     "Home_Team": home_team,
@@ -67,6 +70,7 @@ def get_odds(leagues:list):
                 }
     
                 for market in bookmaker["markets"]:
+                    row_data["Last_Update"] = market["last_update"]
                     if market["key"] == "h2h":  # Only process head-to-head odds
                         for outcome in market["outcomes"]:
                             if outcome["name"] == home_team:
@@ -85,5 +89,12 @@ def get_odds(leagues:list):
     # Filter out illegal bookmakers
     legal_bookmakers = get_legal_sportsbooks(STATE)
     df = df[df['Bookmaker'].isin(legal_bookmakers)]
+
+    # Cutoff time
+    df["Last_Update"] = pd.to_datetime(df["Last_Update"], errors='coerce', utc=True)
+
+    # Define freshness threshold in UTC
+    cutoff_time = datetime.now(timezone.utc) - timedelta(minutes=1)
+
     # Load
     return df

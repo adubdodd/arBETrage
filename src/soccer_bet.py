@@ -17,13 +17,12 @@ odds_df = get_odds(leagues)
 probs_df = calc_soccer_probs(odds_df)
 arbitrage_df = calc_arbitrage(probs_df)
 # Load
-load_to_mongodb(odds_df), db_name=''
-load_to_mongodb()
-load_to_mongodb(arbitrage_df,)
-
-# Notify
+MONGO_URI = os.getenv('MONGO_URI')
+load_to_mongodb(odds_df, db_name='odds', collection_name='odds')
+load_to_mongodb(probs_df, db_name='odds', collection_name='probabilities')
 if len(arbitrage_df) > 0:
-    # notify in discord
+    load_to_mongodb(arbitrage_df, db_name='odds', collection_name='arbitrage_opportunities')
+# Notify (Discord)
     messages = format_message(arbitrage_df.sort_values('Profit', ascending=True), ['Home', 'Away', 'Draw'])
     for message in messages:
         send_to_discord(message)

@@ -15,9 +15,9 @@ def get_odds(leagues:list):
     # List to store rows
     rows = []
 
-    for sport in leagues: 
+    for league in leagues: 
         API_KEY = os.getenv('API_KEY')
-        SPORT = sport
+        SPORT = league
         REGIONS = 'us' # uk | us | eu | au. Multiple can be specified if comma delimited
         MARKETS = 'h2h' # h2h | spreads | totals. Multiple can be specified if comma delimited
         ODDS_FORMAT = 'decimal' # decimal | american
@@ -35,13 +35,13 @@ def get_odds(leagues:list):
         )
 
         if odds_response.status_code != 200:
-            print(f'Failed to get odds for {sport}: status_code {odds_response.status_code}, response body {odds_response.text}')
+            print(f'Failed to get odds for {league}: status_code {odds_response.status_code}, response body {odds_response.text}')
 
         else:
             odds_json = odds_response.json()
-            print('Sport:',sport,'  Number of events:', len(odds_json))
+            print('Sport:',league,'  Number of events:', len(odds_json))
 
-        if sport == leagues[-1]:
+        if league == leagues[-1]:
             # Check the usage quota
             print('Remaining requests:', odds_response.headers['x-requests-remaining'])
             print('Used requests:', odds_response.headers['x-requests-used'])
@@ -86,11 +86,13 @@ def get_odds(leagues:list):
     # Filter out bookmakers that are not legal in the state
     legal_bookmakers = get_legal_sportsbooks(STATE)
     df = df[df['Bookmaker'].isin(legal_bookmakers)]
+
     # Cutoff time
     df["Last_Update"] = pd.to_datetime(df["Last_Update"], errors='coerce', utc=True)
 
-# Define freshness threshold in UTC
-    cutoff_time = datetime.now(timezone.utc) - timedelta(minutes=10)
+    # Define freshness threshold in UTC
+    cutoff_time = datetime.now(timezone.utc) - timedelta(minutes=1)
+
     print(f'precutoff_time_df length: {len(df)}')
     df = df[df["Last_Update"] >= cutoff_time]
     print(f'postcutoff_time_df length: {len(df)}')
