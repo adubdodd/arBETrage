@@ -11,7 +11,7 @@ BOOKMAKER_BASE_URLS = {
 
 def load_sport_league_mapping():
     """Load the sport-to-league mapping from JSON."""
-    with open('/src/configs/url_mapping.json', 'r') as file:
+    with open('/opt/airflow/src/configs/url_mapping.json', 'r') as file:
         return json.load(file)
 
 def build_sportsbook_url(bookmaker, league):
