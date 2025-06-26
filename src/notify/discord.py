@@ -8,7 +8,7 @@ from helper_functions import decimal_to_american
 
 load_dotenv()
 
-DISCORD_WEBHOOK = os.getenv("DISCORD_WEBHOOK")
+DISCORD_WEBHOOK = os.getenv("DISCORD_WEBHOOK",'')
 # Format the DataFrame into a readable Discord message
 def format_message(df, bet_types=["Home", "Away"], custom_message=None, max_length=2000):
     message = "**🎯 @here Arbitrage Opp. Found! 🎯**\n\n"

@@ -7,4 +7,4 @@ python-telegram-bot    # For Telegram bot integration (if you choose Telegram al
 dotenv                 # For loading environment variables from a .env file
 scipy                  # For advanced math formulae
 pymongo                # For MongoDB integration (if you choose MongoDB for data storage)
-apache-airflow                # For job orchestration
+apache-airflow         # For job orchestration
