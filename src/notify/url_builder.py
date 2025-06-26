@@ -1,5 +1,10 @@
 import json
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
+# Load environment variables
+URL_MAPPING_FILE = os.getenv("URL_MAPPING_FILE", '/opt/airflow/src/configs/url_mapping.json')
 
 BOOKMAKER_BASE_URLS = {
     "BetMGM": "https://sports.ny.betmgm.com/en/sports/",
@@ -11,7 +16,7 @@ BOOKMAKER_BASE_URLS = {
 
 def load_sport_league_mapping():
     """Load the sport-to-league mapping from JSON."""
-    with open('/opt/airflow/src/configs/url_mapping.json', 'r') as file:
+    with open(URL_MAPPING_FILE, 'r') as file:
         return json.load(file)
 
 def build_sportsbook_url(bookmaker, league):
