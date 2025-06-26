@@ -15,7 +15,7 @@ def format_message(df, bet_types=["Home", "Away"], custom_message=None, max_leng
     messages = []
 
     for _, row in df.iterrows():
-        segment = f"📢 **{row['Matchup']}**\n"
+        segment = f"📢 **{row['League_Title']}**\n"
         segment += f"🕒 **Start Time:** {row['Start_Time']}\n"
 
         league = row.get("League_Key", "unknown_league")  # You need a League column in your df
@@ -33,7 +33,7 @@ def format_message(df, bet_types=["Home", "Away"], custom_message=None, max_leng
                 else:
                     link_text = f"[${row[bet_key]} @ {decimal_to_american(row[odds_key])}]({'<'+url+'>'}) ({bookmaker})"
 
-                result = {row[f"{bet_type}_Team"] if bet_type in ["Home", "Away"] else "Draw"}
+                result = [row[f"{bet_type}_Team"] if bet_type in ["Home", "Away"] else "Draw"][0]
                 segment += f"🔹 **{result}:** {link_text}\n"
 
         segment += f"💰 **Expected Payout:** ${row['Expected_Payout']:.2f}\n"
