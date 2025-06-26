@@ -14,7 +14,7 @@ load_dotenv()
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
-def get_odds(leagues:list) -> pd.DataFrame:
+def get_odds(leagues:list, ) -> pd.DataFrame:
     # List to store rows
     rows = []
     API_KEY = os.getenv('API_KEY')
@@ -51,7 +51,7 @@ def get_odds(leagues:list) -> pd.DataFrame:
 
 
             if odds_response.status_code == 401:
-                logger.warning(odds_response.text['message'])
+                logger.warning(odds_response.text)
                 send_to_discord('Out of the_odds_API credits')
                 break
 
